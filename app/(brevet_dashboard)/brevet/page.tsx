@@ -5,15 +5,22 @@ import React, { useEffect } from "react";
 import Header from "./_components/Header";
 import Cookies from "js-cookie";
 import axiosInstance from "@/lib/axiosInstance";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const page = () => {
+  const router = useRouter();
   const fetchData = async () => {
-    axiosInstance.interceptors.request.use((config) => {
-      console.log(Cookies.get("authToken"));
-      // config.headers.Authorization()
-      return config;
-    });
-    await axiosInstance.get("/protected/user");
+    try {
+      const data = await axiosInstance.get("/protected/user");
+      console.log(data);
+    } catch (err) {
+      router.push("/sign-in");
+    }
+    // const data = await axiosInstance.post("/refreshToken");
+    // console.log(data);
+
+    // router.push("/sign-in");
   };
   useEffect(() => {
     fetchData();

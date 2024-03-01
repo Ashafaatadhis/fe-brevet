@@ -7,9 +7,13 @@ const retreiveUserDataFromCookie = () => {
 
   if (!token) return;
 
-  const decode: any = jwtDecode(token);
-  console.log(decode);
-  return decode;
+  try {
+    const decode: any = jwtDecode(token);
+    console.log(decode);
+    return decode;
+  } catch (err) {
+    return;
+  }
   // return storedUserData;
 };
 

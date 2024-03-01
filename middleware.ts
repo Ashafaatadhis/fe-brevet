@@ -23,12 +23,16 @@ export default function middleware(req: NextRequest) {
     return NextResponse.redirect(absoluteURL.toString());
   }
 
-  const isUserData = jwtDecode(authToken?.value as string);
-  // const useData = cookieStore.get("userData");
-  // const isUserData = isEmpty(useData);
-
-  if (!isUserData) {
+  try {
+    const isUserData = jwtDecode(authToken?.value as string);
+    if (!isUserData) {
+      const absoluteURL = new URL("/", req.nextUrl.origin);
+      return NextResponse.redirect(absoluteURL.toString());
+    }
+  } catch (err) {
     const absoluteURL = new URL("/", req.nextUrl.origin);
     return NextResponse.redirect(absoluteURL.toString());
   }
+  // const useData = cookieStore.get("userData");
+  // const isUserData = isEmpty(useData);
 }
